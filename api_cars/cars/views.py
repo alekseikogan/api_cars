@@ -1,31 +1,39 @@
-from rest_framework import viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
+# from rest_framework import viewsets
+# from rest_framework.decorators import action
+# from rest_framework.response import Response
+from rest_framework import generics
+from rest_framework.permissions import IsAdminOrReadOnly
 
-from .models import Car, Mark
+from .models import Car
 from .serializers import CarSerializer
 
 
-class CarViewSet(viewsets.ModelViewSet):
+class CarAPIList(generics.ListCreateAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
+    permission_classes = (IsAdminOrReadOnly,)
+
+
+class CarAPIUpdate(generics.UpdateAPIView):
     queryset = Car.objects.all()
     serializer_class = CarSerializer
 
-    @action(methods=['get'], detail=False)
-    def lexus(self, request):
-        querry = Car.objects.filter(mark__name='Lexus')
-        print(f'querry = {querry}')
-        serializer = self.get_serializer(querry, many=True)
-        return Response(serializer.data)
+
+class CarAPIDestroy(generics.RetrieveUpdateAPIView):
+    queryset = Car.objects.all()
+    serializer_class = CarSerializer
 
 
-# class CarAPIList(generics.ListCreateAPIView):
+# class CarViewSet(viewsets.ModelViewSet):
 #     queryset = Car.objects.all()
 #     serializer_class = CarSerializer
 
+#     @action(methods=['get'], detail=False)
+#     def lexus(self, request):
+#         querry = Car.objects.filter(mark__name='Lexus')
+#         serializer = self.get_serializer(querry, many=True)
+#         return Response(serializer.data)
 
-# class CarAPIUpdate(generics.UpdateAPIView):
-#     queryset = Car.objects.all()
-#     serializer_class = CarSerializer
 
 # class CarAPIView(APIView):
 #     def get(self, request):

@@ -1,7 +1,6 @@
-from unicodedata import name
 from rest_framework import serializers
-from rest_framework.renderers import JSONRenderer
-from .models import Car, Mark
+
+from .models import Car
 
 
 class CarSerializer(serializers.ModelSerializer):
